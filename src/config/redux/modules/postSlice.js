@@ -22,14 +22,11 @@ export const fetchPosts = createAsyncThunk(
       const postsRef = collection(db, "posts");
       const querySnapshot = await getDocs(postsRef);
       const postPromises = querySnapshot.docs.map(async (document) => {
-        const likesCollectionRef = collection(db, "likes");
-        const q = query(likesCollectionRef, where("postId", "==", document.id));
-        const likesDocSnapShot = await getDocs(q);
-        const likesCount = likesDocSnapShot.size;
+        // Quiz) posts에 해당하는 likes를 가져옵니다. likesCount를 만들어보세요!
 
         return {
           id: document.id,
-          likes: likesCount,
+          // likes: likesCount,
           ...document.data(),
         };
       });
@@ -75,31 +72,10 @@ export const deletePost = createAsyncThunk(
   }
 );
 
+// Quiz) 좋아요 기능을 구현해보세요!
 export const likePost = createAsyncThunk(
   `${name}/likePost`,
-  async (postId, thunkAPI) => {
-    try {
-      const currentUserId = thunkAPI.getState().userReducer.currentUser.uid;
-
-      const likesCollectionRef = collection(db, "likes");
-      const q = query(likesCollectionRef, where("uid", "==", currentUserId));
-      const querySnapshot = await getDocs(q);
-
-      const likeDocSnapShot = querySnapshot.docs.find(
-        (doc) => doc.data().postId === postId
-      );
-
-      if (likeDocSnapShot?.exists()) {
-        await deleteDoc(likeDocSnapShot.ref);
-        return thunkAPI.fulfillWithValue({ postId, isLike: false });
-      } else {
-        await addDoc(likesCollectionRef, { uid: currentUserId, postId });
-        return thunkAPI.fulfillWithValue({ postId, isLike: true });
-      }
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
+  async (postId, thunkAPI) => {}
 );
 
 const initialState = {
