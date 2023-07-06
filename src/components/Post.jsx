@@ -8,7 +8,6 @@ const Post = ({ post }) => {
 
   const handleLike = (id) => {
     dispatch(likePost(id));
-    console.log(id);
   };
 
   return (

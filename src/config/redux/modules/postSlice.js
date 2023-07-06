@@ -132,16 +132,7 @@ const postSlice = createSlice({
       })
       .addCase(likePost.fulfilled, (state, action) => {
         state.loading = false;
-        state.posts = state.posts.map((post) => {
-          if (post.id === action.payload.postId) {
-            if (action.payload.isLike) {
-              post.likes += 1;
-            } else {
-              post.likes -= 1;
-            }
-          }
-          return post;
-        });
+        // Quiz) 좋아요 기능을 구현해보세요!
       })
       .addCase(likePost.rejected, (state, action) => {
         state.loading = false;
