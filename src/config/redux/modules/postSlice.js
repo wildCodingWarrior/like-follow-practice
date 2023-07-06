@@ -82,12 +82,14 @@ export const likePost = createAsyncThunk(
       const currentUserId = thunkAPI.getState().userReducer.currentUser.uid;
 
       const likesCollectionRef = collection(db, "likes");
-      const q = query(likesCollectionRef, where("uid", "==", currentUserId));
+      const q = query(
+        likesCollectionRef,
+        where("uid", "==", currentUserId),
+        where("postId", "==", postId)
+      );
       const querySnapshot = await getDocs(q);
 
-      const likeDocSnapShot = querySnapshot.docs.find(
-        (doc) => doc.data().postId === postId
-      );
+      const likeDocSnapShot = querySnapshot.docs[0];
 
       if (likeDocSnapShot?.exists()) {
         await deleteDoc(likeDocSnapShot.ref);
